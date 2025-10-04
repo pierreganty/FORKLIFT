@@ -91,7 +91,7 @@ public class BuchiAutomaton {
 
 	public boolean membership (SetOfStates U, Word period) {
 		Set<Triplet<State, Integer, Boolean>> S = new HashSet<>();
-		SetOfStates P = new SetOfStates();
+		Set<Pair<State, Integer>> P = new HashSet<>();
 		
 		for (State start : U) {
 			S.clear(); P.clear();
@@ -100,36 +100,42 @@ public class BuchiAutomaton {
 		return false;
 	}
 	
-	private boolean reachable_final_product (State from, int i, Word period, Set<Triplet<State, Integer, Boolean>> S, SetOfStates P) {
+	private boolean reachable_final_product (State from, int i, Word period, Set<Triplet<State, Integer, Boolean>> S, Set<Pair<State, Integer>> P) {
 		S.add(new Triplet<State, Integer, Boolean>(from, i, false));
-		P.add(from);
-		
+		P.add(new Pair<State, Integer>(from, i));
+
 		SetOfStates posts = from.getSuccessors(period.getIndex(i));
 		if (posts != null) {
 			for (State to : posts) {
-				int ii = (i+1 == period.getLength())?0:i+1;
+				int ii = (i+1 == period.getLength())?0:i+1;				
 				if (S.contains(new Triplet<>(to, ii, false)) == false) {
 					if (reachable_final_product(to, ii, period, S, P)) return true;
 				}
+			
+				if (to.isFinal()) {	
+					if (P.contains(new Pair<>(to, ii))) return true;
+					if (S.contains(new Triplet<>(to, ii, true)) == false) {
+						if (iterable_final_product(to, ii, period, S, P)) return true;
+				}
 			}
 		}
-		
-		if (from.isFinal()) {
-			if (iterable_final_product(from, i, period, S, P)) return true;
 		}
-		P.remove(from);
+
+	
+
 		
+		P.remove(new Pair<>(from, i));
 		return false;
 	}
 	
-	private boolean iterable_final_product (State from, int i, Word period,Set<Triplet<State, Integer, Boolean>> S, SetOfStates P) {
+	private boolean iterable_final_product (State from, int i, Word period,Set<Triplet<State, Integer, Boolean>> S, Set<Pair<State, Integer>> P) {
 		S.add(new Triplet<State, Integer, Boolean>(from, i, true));
 		
 		SetOfStates posts = from.getSuccessors(period.getIndex(i));
 		if (posts != null) {
 			for (State to : posts) {
 				int ii = (i+1 == period.getLength())?0:i+1;
-				if (P.contains(to)) return true;
+				if (P.contains(new Pair<>(to, ii))) return true;
 				if (S.contains(new Triplet<>(to, ii, true)) == false) { 
 					if (iterable_final_product(to, ii, period, S, P)) return true;
 				}
