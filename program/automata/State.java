@@ -29,10 +29,10 @@ public class State {
 		set.add(new Pair<>(this, this.isFinal()));
 		for (int index = 0; index < word.getLength(); index++) {			
 			for (Pair<State, Boolean> pair : set) {
-				SetOfStates posts = pair.getFirst().getSuccessors(word.getIndex(index));
+				SetOfStates posts = pair.first().getSuccessors(word.getIndex(index));
 				if (posts != null) {
 					for (State state : posts)
-						set_next.add(new Pair<>(state, pair.getSecond() || state.isFinal()));
+						set_next.add(new Pair<>(state, pair.second() || state.isFinal()));
 				}
 			}
 			set_tmp = set;

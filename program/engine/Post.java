@@ -25,8 +25,8 @@ public abstract class Post<T extends QuasiOrder<T>> {
 			for (Symbol symbol : fromA.getSymbols()) {
 				if (fromA.getSuccessors(symbol) != null) {// FIXME: test might not be needed > IT IS NEEDED
 					for (Pair<T, Word> pair : updates.get(fromA)) {
-						T postB = post(pair.getFirst(), symbol);
-						Word word = new Word(pair.getSecond(), symbol);
+						T postB = post(pair.first(), symbol);
+						Word word = new Word(pair.second(), symbol);
 						for (State toA : fromA.getSuccessors(symbol)) {
 							if (addExtreme(toA, postB, word))
 								buffer.add(toA, postB, word);

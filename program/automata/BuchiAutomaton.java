@@ -61,9 +61,9 @@ public class BuchiAutomaton {
 
 		// -- Edges
 		for(Triplet<String,String,String> t : parser.getTransitions()) {
-			State from = states_register.get(t.getFirst());
-			Symbol symbol = symbols_register.get(t.getSecond());
-			State to = states_register.get(t.getThird());
+			State from = states_register.get(t.first());
+			Symbol symbol = symbols_register.get(t.second());
+			State to = states_register.get(t.third());
 			from.addSuccessor(to, symbol);
 		}
 	}
