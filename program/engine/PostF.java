@@ -31,9 +31,9 @@ public final class PostF extends Post<SetOfContexts> {
 	protected SetOfContexts post (SetOfContexts current, Symbol symbol) {
 		SetOfContexts postB = new SetOfContexts();
 		for (Pair<Pair<State, State>, Boolean> pair : current) {
-			State initB = pair.getFirst().getFirst();
-			State fromB = pair.getFirst().getSecond();
-			Boolean accept = pair.getSecond();
+			State initB = pair.first().first();
+			State fromB = pair.first().second();
+			Boolean accept = pair.second();
 			if (fromB.getSuccessors(symbol) != null) {
 				for (State toB : fromB.getSuccessors(symbol))
 					postB.add(initB, toB, accept || toB.isFinal());

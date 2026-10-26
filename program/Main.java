@@ -86,14 +86,14 @@ public class Main {
 			for (State s : A.getFinalStates()) {
 				System.out.println("\nAt final state " + s);
 				for (Pair<SetOfStates, Word> pairW : postIrev.getSetOfT(s))
-					System.out.println("  '" + pairW.getSecond() + "'\n  " + pairW.getFirst() + "\n");
+					System.out.println("  '" + pairW.second() + "'\n  " + pairW.first() + "\n");
 			}
 			System.out.print("\n¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨");
 			System.out.println("\nMINIMAL PREFIXES");
 			for (State s : A.getFinalStates()) {
 				System.out.println("\nAt final state " + s);
 				for (Pair<SetOfStates, Word> pairU : postI.getSetOfT(s))
-					System.out.println("  '" + pairU.getSecond() + "'\n  " + pairU.getFirst() + "\n");
+					System.out.println("  '" + pairU.second() + "'\n  " + pairU.first() + "\n");
 			}
 		}
 	}
@@ -173,8 +173,8 @@ public class Main {
 			
 			int max_counter=0;
 			for (Pair<SetOfStates, Word> pairW : postIrev.getSetOfT(s)) {call_V++;max_counter++;
-				SetOfStates W = pairW.getFirst();
-				Word word_of_W = pairW.getSecond();
+				SetOfStates W = pairW.first();
+				Word word_of_W = pairW.second();
 
 				if (flag_v) System.out.println("    considering MAX prefix '"+word_of_W+"' ("+max_counter+"/"+postIrev.getSetOfT(s).size()+")");
 				if (flag_v) System.out.print("    PERIOD fix-point (" +call_V+ "): computing ..\r");
@@ -187,16 +187,16 @@ public class Main {
 
 				int period_counter = 0;
 				for (Pair<SetOfContexts, Word> pairV : postF.getSetOfT(s)) {period_counter++;
-					SetOfContexts V = pairV.getFirst();
-					Word word_of_V = pairV.getSecond();
+					SetOfContexts V = pairV.first();
+					Word word_of_V = pairV.second();
 					
 					if (flag_v) System.out.println("    considering period '"+word_of_V+"' ("+period_counter+"/"+postF.getSetOfT(s).size()+")");
 	
 					// start relevant
 					if (flag_o) { if (relevance_test(W, V) == false) continue;}
 						for (Pair<SetOfStates, Word> pairU : postI.getSetOfT(s)) {
-							SetOfStates U = pairU.getFirst();
-							Word word_of_U = pairU.getSecond();
+							SetOfStates U = pairU.first();
+							Word word_of_U = pairU.second();
 							
 							if (U.smaller_than(W) == true) {membership_counter++;
 								if (flag_v) System.out.println("      considering MIN prefix '"+word_of_U+"' smaller than the MAX prefix '"+word_of_W+"'");
