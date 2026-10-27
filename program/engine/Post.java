@@ -4,7 +4,7 @@ import java.util.Set;
 import automata.*;
 import tuples.*;
 
-public abstract class Post<T extends QuasiOrder<T>> {
+public abstract sealed class Post<T extends QuasiOrder<T>> permits PostI, PostF {
 	protected final PostVariable<T> content = new PostVariable<>();
 	protected PostVariable<T> updates = new PostVariable<>();
 
@@ -23,7 +23,7 @@ public abstract class Post<T extends QuasiOrder<T>> {
 
 		for (State fromA : updates.keySet()) {
 			for (Symbol symbol : fromA.getSymbols()) {
-				if (fromA.getSuccessors(symbol) != null) {// FIXME: test might not be needed > IT IS NEEDED
+				if (fromA.getSuccessors(symbol) != null) {
 					for (Pair<T, Word> pair : updates.get(fromA)) {
 						T postB = post(pair.first(), symbol);
 						Word word = new Word(pair.second(), symbol);
