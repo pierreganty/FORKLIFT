@@ -17,7 +17,7 @@ $(EXE): $(OBJ)
 
 
 %.class: %.java
-	javac $^
+	javac --add-modules jdk.incubator.vector -Xlint:preview $^
 
 
 clean:
