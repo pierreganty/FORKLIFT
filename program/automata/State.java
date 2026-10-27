@@ -79,12 +79,12 @@ public class State {
 	}
 
 	
-	public boolean equals (State other) {
+	public boolean equals (Object other) {
 		if (other instanceof State) return id == ((State) other).id;
 		return false;
 	}
 	
 
 	public String toString() {return name;}
-	public int hashCode() {return 31 * id;} //FIXME
+	public int hashCode() {return 31 * id;}
 }

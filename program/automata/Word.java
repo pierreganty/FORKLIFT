@@ -1,27 +1,22 @@
 package automata;
 
 
-public class Word {
-	private final Symbol[] array;
-	private final int length;
+public record Word(Symbol[] array, int length) {
 	
 	public Word () {
-		length = 0;
-		array = null;
+		this(new Symbol[0], 0);
 	}
 	
 	public Word (Symbol symbol) {
-		length = 1;
-		array = new Symbol[1];
-		array[0] = symbol;
+		this(new Symbol[]{symbol}, 1);
 	}
 	
 	public Word (Word word, Symbol symbol) {
-		length = word.length + 1;
-		array = new Symbol[length];
-		for (int i = 0; i < word.length; i++)
-			array[i] = word.array[i];
-		array[word.length] = symbol;
+		this(
+			java.util.Arrays.copyOf(word.array, word.length + 1),
+			word.length + 1
+		);
+		this.array[word.length] = symbol;
 	}
 	
 	public int getLength () {
