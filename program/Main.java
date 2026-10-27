@@ -38,7 +38,7 @@ public class Main {
 				EXIT CODE
 				  0 if the inclusion is TRUE
 				  1 if the inclusion is FALSE
-				  127 when the inclusion have not been computed
+				  127 the inclusion check was aborted
 
 				OPTIONS
 				  -v, --verbose
