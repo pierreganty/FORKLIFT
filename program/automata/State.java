@@ -9,10 +9,7 @@ import engine.*;
 import tuples.Pair;
 
 
-public class State {
-	private final int id;
-	private final String name;
-	private final boolean is_final;
+public record State(int id, String name, boolean is_final) {
 	private Map<Symbol, SetOfStates> succ = new HashMap<>();
 
 
@@ -61,9 +58,7 @@ public class State {
 
 
 	State (String name, int id, boolean acceptance, Set<Symbol> alphabet) {
-		this.name = name;
-		this.id = id;
-		is_final = acceptance;
+		this(id, name, acceptance);
 	}
 
 
@@ -79,12 +74,12 @@ public class State {
 	}
 
 	
-	public boolean equals (State other) {
+	public boolean equals (Object other) {
 		if (other instanceof State) return id == ((State) other).id;
 		return false;
 	}
 	
 
 	public String toString() {return name;}
-	public int hashCode() {return 31 * id;} //FIXME
+	public int hashCode() {return 31 * id;}
 }
