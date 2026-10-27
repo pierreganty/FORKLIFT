@@ -2,14 +2,7 @@ package automata;
 
 
 
-public final class Symbol {
-	private final int id;
-	private final String name;
-
-
-	Symbol(String name, int id) { this.name = name; this.id = id; }
-
-
+public record Symbol(String name, int id) {
 	//+++++++++++++++ Getters +++++++++++++++
 	public String getName() {return name;}
 	// +++++++++++++++ Getters +++++++++++++++

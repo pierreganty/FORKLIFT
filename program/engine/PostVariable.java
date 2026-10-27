@@ -36,7 +36,7 @@ class PostVariable<T extends QuasiOrder<T>> {
 	boolean addIfMin (State q, T new_set, Word w) {
 		Set<Pair<T, Word>> set_set = content.computeIfAbsent(q, k -> new HashSet<>());
 		for (Iterator<Pair<T, Word>> i = set_set.iterator(); i.hasNext(); ) {
-			T set = i.next().getFirst();
+			T set = i.next().first();
 			if (set.smaller_than(new_set) == true) return false;
 			if (new_set.smaller_than(set) == true) i.remove();
 		}
@@ -48,7 +48,7 @@ class PostVariable<T extends QuasiOrder<T>> {
 	boolean addIfMax (State q, T new_set, Word w) {
 		Set<Pair<T, Word>> set_set = content.computeIfAbsent(q, k -> new HashSet<>());
 		for (Iterator<Pair<T, Word>> i = set_set.iterator(); i.hasNext(); ) {
-			T set =  i.next().getFirst();
+			T set =  i.next().first();
 			if (new_set.smaller_than(set) == true) return false;
 			if (set.smaller_than(new_set) == true) i.remove();
 		}
@@ -67,8 +67,8 @@ class PostVariable<T extends QuasiOrder<T>> {
 				StringJoiner outsj = new StringJoiner("\n  ", ":\n  ", "\n");
 				for (Pair<T, Word> pair : this.get(state)) {
 					StringJoiner sj = new StringJoiner("\n  ", "> ", "");
-					sj.add(pair.getSecond().toString());
-					sj.add(pair.getFirst().toString());
+					sj.add(pair.second().toString());
+					sj.add(pair.first().toString());
 					outsj.add(sj.toString());
 				}
 				s.append(outsj).append("\n");

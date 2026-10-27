@@ -29,10 +29,10 @@ public class State {
 		set.add(new Pair<>(this, this.isFinal()));
 		for (int index = 0; index < word.getLength(); index++) {			
 			for (Pair<State, Boolean> pair : set) {
-				SetOfStates posts = pair.getFirst().getSuccessors(word.getIndex(index));
+				SetOfStates posts = pair.first().getSuccessors(word.getIndex(index));
 				if (posts != null) {
 					for (State state : posts)
-						set_next.add(new Pair<>(state, pair.getSecond() || state.isFinal()));
+						set_next.add(new Pair<>(state, pair.second() || state.isFinal()));
 				}
 			}
 			set_tmp = set;
@@ -79,12 +79,12 @@ public class State {
 	}
 
 	
-	public boolean equals (State other) {
+	public boolean equals (Object other) {
 		if (other instanceof State) return id == ((State) other).id;
 		return false;
 	}
 	
 
 	public String toString() {return name;}
-	public int hashCode() {return 31 * id;} //FIXME
+	public int hashCode() {return 31 * id;}
 }

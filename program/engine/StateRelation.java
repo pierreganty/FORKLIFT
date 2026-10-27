@@ -38,8 +38,8 @@ implements QuasiOrder<StateRelation>, Iterable<Pair<State, State>> {
 		StringJoiner outersj = new StringJoiner(";", "{", "}" );
 		for (Pair<State, State> pair : this) {
 			StringJoiner sj = new StringJoiner(",", "(", ")" );
-			sj.add(pair.getFirst().toString());
-			sj.add(pair.getSecond().toString());
+			sj.add(pair.first().toString());
+			sj.add(pair.second().toString());
 			outersj.add(sj.toString());
 		}
 		return outersj.toString();
