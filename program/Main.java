@@ -16,22 +16,42 @@ public class Main {
 	private static String witness = "";
 	
 	private static String getUsage () {
-		return "\nUSAGE\n  java -jar forklift.jar <SUB Büchi automaton> <SUP Büchi automaton>\n"
-				+ "\nWHERE\n  both Büchi automata are given in '.ba' format\n"
-				+ "  --> http://languageinclusion.org/doku.php?id=tools#the_ba_format\n";
+		return """
+				USAGE
+				  java -jar forklift.jar <SUB Buchi automaton> <SUP Buchi automaton>
+				
+				WHERE
+				  both Buchi automata are given in '.ba' format
+				  --> http://languageinclusion.org/doku.php?id=tools#the_ba_format
+				""";
 	}
 	
 	private static String getHelp () {
-		return getUsage() + "\nEXIT CODE\n"
-					+ "  0 if the inclusion is TRUE\n"
-					+ "  1 if the inclusion is FALSE\n"
-					+ "  127 when the inclusion have not been computed\n\n"
-					+ "OPTIONS\n"				
-					+ "  -v, --verbose\n    Details the execution steps\n"
-					+ "  -q, --quiet\n    Disables output prints\n"
-					+ "  -t, --time\n    Returns the run time (in milliseconds) excluding parsing time\n"
-					+ "  -p, --prefix\n    Displays prefixes\n"
-					+ "  -o, --optimize\n    Ignores some ultimately periodic words\n";
+		return """
+				USAGE
+				  java -jar forklift.jar <SUB Buchi automaton> <SUP Buchi automaton>
+				
+				WHERE
+				  both Buchi automata are given in '.ba' format
+				  --> http://languageinclusion.org/doku.php?id=tools#the_ba_format
+
+				EXIT CODE
+				  0 if the inclusion is TRUE
+				  1 if the inclusion is FALSE
+				  127 when the inclusion have not been computed
+
+				OPTIONS
+				  -v, --verbose
+				      Details the execution steps
+				  -q, --quiet
+				      Disables output prints
+				  -t, --time
+				      Returns the run time (in milliseconds) excluding parsing time
+				  -p, --prefix
+				      Displays prefixes
+				  -o, --optimize
+				      Ignores some ultimately periodic words
+				""";
 	}
 
 	private static ArrayList<String> setOptions (String[] args) throws Exception {
