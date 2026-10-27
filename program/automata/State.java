@@ -9,7 +9,10 @@ import engine.*;
 import tuples.Pair;
 
 
-public record State(int id, String name, boolean is_final) {
+public class State {
+	private final int id;
+	private final String name;
+	private final boolean is_final;
 	private Map<Symbol, SetOfStates> succ = new HashMap<>();
 
 
@@ -58,7 +61,9 @@ public record State(int id, String name, boolean is_final) {
 
 
 	State (String name, int id, boolean acceptance, Set<Symbol> alphabet) {
-		this(id, name, acceptance);
+		this.name = name;
+		this.id = id;
+		is_final = acceptance;
 	}
 
 

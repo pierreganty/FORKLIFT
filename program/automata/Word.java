@@ -4,7 +4,7 @@ package automata;
 public record Word(Symbol[] array, int length) {
 	
 	public Word () {
-		this(null, 0);
+		this(new Symbol[0], 0);
 	}
 	
 	public Word (Symbol symbol) {
