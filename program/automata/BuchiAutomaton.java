@@ -7,7 +7,7 @@ import tuples.*;
 
 
 public class BuchiAutomaton {
-	private final Set<Symbol> alphabet = new HashSet<>();
+	private final int alphabetSize;
 	private final SetOfStates states = new SetOfStates();
 	private final State init;
 	private final SetOfStates finals = new SetOfStates();
@@ -15,10 +15,10 @@ public class BuchiAutomaton {
 
 
 	// +++++++++++++++ Getters +++++++++++++++
-	public Set<Symbol> getAlphabet() {return alphabet;}
-	public Set<State> getFinalStates() {return finals;}
-	public Set<State> getStates() {return states;}
+	public int getAlphabetSize() {return alphabetSize;}
+	public SetOfStates getStates() {return states;}
 	public State getInitialState() {return init;}
+	public SetOfStates getFinalStates() {return finals;}
 	// +++++++++++++++ Getters +++++++++++++++
 
 
@@ -26,22 +26,24 @@ public class BuchiAutomaton {
 	public BuchiAutomaton(Path file, final Set<Symbol> stating_alphabet) throws Exception {
 		AutomatonParser parser = new AutomatonParser(file);
 
-		// -- Symbols
-		Map<String,Symbol> symbols_register = new HashMap<>();
-		for (Symbol a : stating_alphabet)
-			symbols_register.put(a.getName(), a);
-
-
-		int symbol_id_maker = stating_alphabet.size();
-		alphabet.addAll(stating_alphabet);
-
+		// -- Symbols: register all symbol names in SymbolManager
+		Map<String, Integer> symbols_register = new HashMap<>();
+		
+		// First, register symbols from stating_alphabet
+		for (Symbol a : stating_alphabet) {
+			int id = SymbolManager.addSymbol(a.getName());
+			symbols_register.put(a.getName(), id);
+		}
+		
+		// Then register symbols from the file
 		for (String name : parser.getAlphabet()) {
 			if (symbols_register.containsKey(name) == false) {
-				Symbol a = new Symbol(name, symbol_id_maker++);
-				alphabet.add(a);
-				symbols_register.put(a.getName(), a);
+				int id = SymbolManager.addSymbol(name);
+				symbols_register.put(name, id);
 			}
 		}
+		
+		alphabetSize = SymbolManager.size();
 
 		// -- States
 		int state_id_maker = 0;
@@ -49,11 +51,11 @@ public class BuchiAutomaton {
 		for (String name : parser.getStates()) {
 			State q;
 			if (parser.getFinals().contains(name)) {
-				q = new State(name, state_id_maker++, true, alphabet);
+				q = new State(name, state_id_maker++, true, alphabetSize);
 				finals.add(q);
 			}
 			else
-				q = new State(name, state_id_maker++, false, alphabet);
+				q = new State(name, state_id_maker++, false, alphabetSize);
 			states_register.put(name, q);
 			states.add(q);
 		}
@@ -62,9 +64,9 @@ public class BuchiAutomaton {
 		// -- Edges
 		for(Triplet<String,String,String> t : parser.getTransitions()) {
 			State from = states_register.get(t.first());
-			Symbol symbol = symbols_register.get(t.second());
+			int symbolId = symbols_register.get(t.second());
 			State to = states_register.get(t.third());
-			from.addSuccessor(to, symbol);
+			from.addSuccessor(to, symbolId);
 		}
 	}
 
@@ -76,11 +78,11 @@ public class BuchiAutomaton {
 		s.append("\n  Finals: ").append(finals);
 		s.append("\n  Transitions:\n");
 		for (State state : states) {
-			for (Symbol symbol : alphabet) {
-				if (state.getSuccessors(symbol) != null) {
+			for (int symbolId = 0; symbolId < alphabetSize; symbolId++) {
+				if (state.getSuccessors(symbolId) != null) {
 					s.append("    ").append(state);
-					s.append(", ").append(symbol.toString());
-					s.append(" -> ").append(state.getSuccessors(symbol).toString());
+					s.append(", ").append(SymbolManager.toString(symbolId));
+					s.append(" -> ").append(state.getSuccessors(symbolId).toString());
 					s.append("\n");
 				}
 			}
@@ -116,14 +118,13 @@ public class BuchiAutomaton {
 					if (P.contains(new Pair<>(to, ii))) return true;
 					if (S.contains(new Triplet<>(to, ii, true)) == false) {
 						if (iterable_final_product(to, ii, period, S, P)) return true;
+					}
 				}
 			}
 		}
-		}
-
-	
 
 		
+
 		P.remove(new Pair<>(from, i));
 		return false;
 	}

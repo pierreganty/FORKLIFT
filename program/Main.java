@@ -107,8 +107,9 @@ public class Main {
 			files[0] = Path.of(names.get(0));
 			files[1] = Path.of(names.get(1));
 
+			SymbolManager.clear();
 			BuchiAutomaton A = new BuchiAutomaton(files[0], new HashSet<>());
-			BuchiAutomaton B = new BuchiAutomaton(files[1], A.getAlphabet());
+			BuchiAutomaton B = new BuchiAutomaton(files[1], new HashSet<>());
 
 			if (flag_q == false) {
 				System.out.println("################\n\nFORQ-based Language Inclusion Formal Testing");

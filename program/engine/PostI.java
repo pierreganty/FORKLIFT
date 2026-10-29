@@ -21,7 +21,7 @@ public final class PostI extends Post<SetOfStates> {
 	}
 	
 	
-	protected SetOfStates post (SetOfStates current, Symbol symbol) {
+	protected SetOfStates post (SetOfStates current, int symbol) {
 		SetOfStates postB = new SetOfStates();
 		for (State fromB : current) {
 			if (fromB.getSuccessors(symbol) != null)

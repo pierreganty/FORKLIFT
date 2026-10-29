@@ -14,7 +14,7 @@ public abstract sealed class Post<T extends QuasiOrder<T>> permits PostI, PostF 
 	// +++++++++++++++ Getters +++++++++++++++
 	
 	
-	abstract protected T post(T current, Symbol symbol);
+	abstract protected T post(T current, int symbol);
 	abstract protected boolean addExtreme(State stateA, T postB, Word word);
 
 	
@@ -22,7 +22,7 @@ public abstract sealed class Post<T extends QuasiOrder<T>> permits PostI, PostF 
 		PostVariable<T> buffer = new PostVariable<>();
 
 		for (State fromA : updates.keySet()) {
-			for (Symbol symbol : fromA.getSymbols()) {
+			for (int symbol : fromA.getSymbols()) {
 				if (fromA.getSuccessors(symbol) != null) {
 					for (Pair<T, Word> pair : updates.get(fromA)) {
 						T postB = post(pair.first(), symbol);

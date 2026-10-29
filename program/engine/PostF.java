@@ -10,7 +10,7 @@ public final class PostF extends Post<SetOfContexts> {
 	
 	
 	protected void initialize(State initA, Set<State> setB) {
-		for (Symbol symbol : initA.getSymbols()) {
+		for (int symbol : initA.getSymbols()) {
 			if (initA.getSuccessors(symbol) != null) {
 				SetOfContexts contexts = new SetOfContexts();
 				for (State fromB : setB) {
@@ -28,7 +28,7 @@ public final class PostF extends Post<SetOfContexts> {
 	}
 	
 	
-	protected SetOfContexts post (SetOfContexts current, Symbol symbol) {
+	protected SetOfContexts post (SetOfContexts current, int symbol) {
 		SetOfContexts postB = new SetOfContexts();
 		for (Pair<Pair<State, State>, Boolean> pair : current) {
 			State initB = pair.first().first();

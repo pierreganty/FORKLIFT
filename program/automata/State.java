@@ -13,15 +13,24 @@ public class State {
 	private final int id;
 	private final String name;
 	private final boolean is_final;
-	private Map<Symbol, SetOfStates> succ = new HashMap<>();
+	private SetOfStates[] succ;
 
 
 	// +++++++++++++++ Getters +++++++++++++++
 	public boolean isFinal() {return is_final;}
 	public String getName() {return name;}
 	public int getId() {return id;}
-	public Set<Symbol> getSymbols () {return succ.keySet();}
-	public SetOfStates getSuccessors (Symbol symbol) { return succ.get(symbol); }
+	public Set<Integer> getSymbols () {
+		Set<Integer> symbols = new HashSet<>();
+		for (int i = 0; i < succ.length; i++) {
+			if (succ[i] != null) symbols.add(i);
+		}
+		return symbols;
+	}
+	public SetOfStates getSuccessors (int symbol) { 
+		if (symbol < 0 || symbol >= succ.length) return null;
+		return succ[symbol]; 
+	}
 	public HashSet<Pair<State, Boolean>> getSuccessorsFNotNull (Word word)  {
 		HashSet<Pair<State, Boolean>> set = new HashSet<>();
 		HashSet<Pair<State, Boolean>> set_next = new HashSet<>();
@@ -60,22 +69,21 @@ public class State {
 	// +++++++++++++++ Getters +++++++++++++++
 
 
-	State (String name, int id, boolean acceptance, Set<Symbol> alphabet) {
+	State (String name, int id, boolean acceptance, int alphabetSize) {
 		this.name = name;
 		this.id = id;
 		is_final = acceptance;
+		this.succ = new SetOfStates[alphabetSize];
 	}
 
 
-	void addSuccessor(State q, Symbol a) {
-		SetOfStates set = succ.get(a);
-
-		if (set == null) {
+	void addSuccessor(State q, int symbolId) {
+		if (succ[symbolId] == null) {
 			SetOfStates singleton = new SetOfStates();
 			singleton.add(q);
-			succ.put(a,singleton);
+			succ[symbolId] = singleton;
 		}
-		else set.add(q);
+		else succ[symbolId].add(q);
 	}
 
 	
