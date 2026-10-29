@@ -2,17 +2,16 @@ package engine;
 
 import java.util.Iterator;
 
-import automata.State;
 import tuples.Pair;
 
 
 public class ContextIterator
-implements Iterator<Pair<Pair<State, State>, Boolean>> {
+implements Iterator<Pair<Pair<Integer, Integer>, Boolean>> {
 
 	private final SetOfContexts cxt;
 	private StateRelation rel;
 	private boolean change;
-	private Iterator<Pair<State, State>> iter;
+	private Iterator<Pair<Integer, Integer>> iter;
 
 	public ContextIterator (SetOfContexts cxt) {
 		this.cxt = cxt;
@@ -32,7 +31,7 @@ implements Iterator<Pair<Pair<State, State>, Boolean>> {
 		return false;
 	}
 
-	public Pair<Pair<State, State>, Boolean> next() {
+	public Pair<Pair<Integer, Integer>, Boolean> next() {
 		if (this.hasNext()) return new Pair<>(iter.next(), change);
 		return null;
 	}

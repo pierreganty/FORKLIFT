@@ -31,7 +31,7 @@ public record Word(int[] array, int length) {
 	public String toString() {
 		String string = "";
 		for (int i = 0; i < length; i++)
-			string = string + SymbolManager.toString(array[i]);
+			string = string + "(SYM_" + array[i] + ")";
 		return string;
 	}
 }

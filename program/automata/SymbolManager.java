@@ -4,17 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Global manager for symbol name to ID mapping.
+ * Manager for symbol name to ID mapping.
+ * Can be shared across automata to ensure consistent symbol IDs.
  * Provides O(1) lookup from int ID to string name.
  */
 public class SymbolManager {
-	private static List<String> symbolNames = new ArrayList<>();
+	private final List<String> symbolNames = new ArrayList<>();
 	
 	/**
 	 * Add a new symbol name and return its ID.
 	 * If the name already exists, returns the existing ID.
 	 */
-	public static int addSymbol(String name) {
+	public int addSymbol(String name) {
 		// Check if already exists
 		for (int i = 0; i < symbolNames.size(); i++) {
 			if (symbolNames.get(i).equals(name)) {
@@ -29,28 +30,21 @@ public class SymbolManager {
 	/**
 	 * Get the name for a symbol ID.
 	 */
-	public static String getName(int symbolId) {
+	public String getName(int symbolId) {
 		return symbolNames.get(symbolId);
 	}
 	
 	/**
 	 * Get the number of symbols registered.
 	 */
-	public static int size() {
+	public int size() {
 		return symbolNames.size();
-	}
-	
-	/**
-	 * Clear all symbols (for testing purposes).
-	 */
-	public static void clear() {
-		symbolNames.clear();
 	}
 	
 	/**
 	 * Get a string representation of a symbol ID.
 	 */
-	public static String toString(int symbolId) {
+	public String toString(int symbolId) {
 		return "(" + getName(symbolId) + ")";
 	}
 }

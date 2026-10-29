@@ -7,13 +7,14 @@ import automata.*;
 public final class PostI extends Post<SetOfStates> {
 	private final boolean reversed_inclusion;
 	
-	public PostI (State initA, State initB, boolean rev) {
+	public PostI (Integer initA, Integer initB, boolean rev, StateManager stateManager, SymbolManager symbolManager) {
+		super(stateManager, symbolManager);
 		initialize(initA, initB);
 		reversed_inclusion = rev;
 	}
 
 	
-	protected void initialize(State initA, State initB) {
+	protected void initialize(Integer initA, Integer initB) {
 		SetOfStates set_qI = new SetOfStates();
 		set_qI.add(initB);
 		updates.add(initA, set_qI, new Word());
@@ -23,15 +24,16 @@ public final class PostI extends Post<SetOfStates> {
 	
 	protected SetOfStates post (SetOfStates current, int symbol) {
 		SetOfStates postB = new SetOfStates();
-		for (State fromB : current) {
-			if (fromB.getSuccessors(symbol) != null)
-				postB.addAll(fromB.getSuccessors(symbol));
+		for (Integer fromB : current) {
+			SetOfStates succ = stateManager.getSuccessors(fromB, symbol);
+			if (succ != null)
+				postB.addAll(succ);
 		}
 		return postB;
 	}
 	
 	
-	protected boolean addExtreme(State stateA, SetOfStates postB, Word word) {
+	protected boolean addExtreme(Integer stateA, SetOfStates postB, Word word) {
 		if (reversed_inclusion) return content.addIfMax(stateA, postB, word);
 		return content.addIfMin(stateA, postB, word);
 	}

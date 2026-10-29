@@ -1,34 +1,33 @@
 package engine;
 
-import automata.*;
-import tuples.*;
 import java.util.*;
+import tuples.*;
 
 
 public final class StateRelation
-extends HashMap<State, SetOfStates>
-implements QuasiOrder<StateRelation>, Iterable<Pair<State, State>> {
+extends HashMap<Integer, SetOfStates>
+implements QuasiOrder<StateRelation>, Iterable<Pair<Integer, Integer>> {
 
-	public void add (State initB, State stateB) {
-		Set<State> set = computeIfAbsent(initB, k -> new SetOfStates());
+	public void add (Integer initB, Integer stateB) {
+		Set<Integer> set = computeIfAbsent(initB, k -> new SetOfStates());
 		set.add(stateB);	
 	}
 	
-	public boolean addAll (State initB, Collection<State> stateB) {
-		Set<State> set = computeIfAbsent(initB, k -> new SetOfStates());
+	public boolean addAll (Integer initB, Collection<Integer> stateB) {
+		Set<Integer> set = computeIfAbsent(initB, k -> new SetOfStates());
 		return set.addAll(stateB);
 	}
 	
-	public boolean contains (State initB, State stateB) {
-		Set<State> set = get(initB);
+	public boolean contains (Integer initB, Integer stateB) {
+		Set<Integer> set = get(initB);
 		if (set == null) return false;
 		return set.contains(stateB);
 	}
 
 	public boolean smaller_than (StateRelation rel) {
-		for (State fromB : keySet()) {
+		for (Integer fromB : keySet()) {
 			if (rel.get(fromB) == null) return false;
-			for (State state : get(fromB))
+			for (Integer state : get(fromB))
 				if (rel.get(fromB).contains(state) == false) return false;
 		}
 		return true;
@@ -36,17 +35,17 @@ implements QuasiOrder<StateRelation>, Iterable<Pair<State, State>> {
 
 	public String toString() {
 		StringJoiner outersj = new StringJoiner(";", "{", "}" );
-		for (Pair<State, State> pair : this) {
+		for (Pair<Integer, Integer> pair : this) {
 			StringJoiner sj = new StringJoiner(",", "(", ")" );
-			sj.add(pair.first().toString());
-			sj.add(pair.second().toString());
+			sj.add("STATE_" + pair.first());
+			sj.add("STATE_" + pair.second());
 			outersj.add(sj.toString());
 		}
 		return outersj.toString();
 	}
 
 
-	public Iterator<Pair<State, State>> iterator() {
+	public Iterator<Pair<Integer, Integer>> iterator() {
 		return new StateRelationIterator(this);
 	}
 }

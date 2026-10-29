@@ -2,16 +2,15 @@ package engine;
 
 import java.util.Iterator;
 
-import automata.State;
 import tuples.Pair;
 
 public class StateRelationIterator
-implements Iterator<Pair<State, State>> {
+implements Iterator<Pair<Integer, Integer>> {
 
 	private final StateRelation rel;
-	private State state_key = null;
-	Iterator<State> iter_key;
-	Iterator<State> iter_value;
+	private Integer state_key = null;
+	Iterator<Integer> iter_key;
+	Iterator<Integer> iter_value;
 
 	public StateRelationIterator (StateRelation rel) {
 		this.rel = rel;
@@ -29,7 +28,7 @@ implements Iterator<Pair<State, State>> {
 		return false;
 	}
 
-	public Pair<State, State> next() {
+	public Pair<Integer, Integer> next() {
 		if (this.hasNext()) return new Pair<>(state_key, iter_value.next());
 		return null;
 	}

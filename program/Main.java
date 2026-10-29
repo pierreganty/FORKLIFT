@@ -81,17 +81,17 @@ public class Main {
 	
 	private static void getPrefixes (BuchiAutomaton A) {
 		if (flag_p) {
-			System.out.print("\n¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨");
+			System.out.print("\n\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8");
 			System.out.println("\nMAXIMAL PREFIXES");
-			for (State s : A.getFinalStates()) {
-				System.out.println("\nAt final state " + s);
+			for (Integer s : A.getFinalStates()) {
+				System.out.println("\nAt final state STATE_" + s);
 				for (Pair<SetOfStates, Word> pairW : postIrev.getSetOfT(s))
 					System.out.println("  '" + pairW.second() + "'\n  " + pairW.first() + "\n");
 			}
-			System.out.print("\n¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨");
+			System.out.print("\n\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8");
 			System.out.println("\nMINIMAL PREFIXES");
-			for (State s : A.getFinalStates()) {
-				System.out.println("\nAt final state " + s);
+			for (Integer s : A.getFinalStates()) {
+				System.out.println("\nAt final state STATE_" + s);
 				for (Pair<SetOfStates, Word> pairU : postI.getSetOfT(s))
 					System.out.println("  '" + pairU.second() + "'\n  " + pairU.first() + "\n");
 			}
@@ -107,13 +107,14 @@ public class Main {
 			files[0] = Path.of(names.get(0));
 			files[1] = Path.of(names.get(1));
 
-			SymbolManager.clear();
-			BuchiAutomaton A = new BuchiAutomaton(files[0], new HashSet<>());
-			BuchiAutomaton B = new BuchiAutomaton(files[1], new HashSet<>());
+			// Create shared SymbolManager for both automata
+			SymbolManager sharedSymbolManager = new SymbolManager();
+			BuchiAutomaton A = new BuchiAutomaton(files[0], new HashSet<>(), sharedSymbolManager);
+			BuchiAutomaton B = new BuchiAutomaton(files[1], A.getAlphabet(), sharedSymbolManager);
 
 			if (flag_q == false) {
 				System.out.println("################\n\nFORQ-based Language Inclusion Formal Testing");
-				System.out.println("\n¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨\nFILES");
+				System.out.println("\n\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\nFILES");
 				System.out.println("  sub-automaton:   " + files[0]);
 				System.out.println("  super-automaton: " + files[1]);
 			}
@@ -123,7 +124,7 @@ public class Main {
 			boolean output = inclusion(A, B);
 			time_end = System.currentTimeMillis();
 			if (flag_t) {
-				System.out.print("\n¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨");
+				System.out.print("\n\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8");
 				System.out.println("\nTIMING (ms):" + (time_end - time_start));
 			}
 
@@ -131,29 +132,30 @@ public class Main {
 			if (flag_q == false) {
 				getPrefixes(A);
 				if (witness != "") {
-					System.out.print("\n¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨\n");
+					System.out.print("\n\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\n");
 					System.out.println("NON-INCLUSION WITNESS");
 					System.out.println("  " + witness);
 				}
-				System.out.println("\n¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨\nOUTPUT:" + output + "\n################");
+				System.out.println("\n\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\nOUTPUT:" + output + "\n################");
 			}
 
 			System.exit(output?0:1);
 		}
 		catch (Exception e) {
 			System.out.println("\nERROR\n  " + e.getMessage() + "\n");
+			System.out.println(e.getStackTrace()[0]);
 			System.exit(127);
 		}
 	}
 
 
 	private static boolean inclusion (BuchiAutomaton A, BuchiAutomaton B) {
-		if (flag_v) System.out.println("\n¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨\nINCLUSION");
+		if (flag_v) System.out.println("\n\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\u00a8\nINCLUSION");
 		
 		
 		if (flag_v) System.out.print("  MAX prefixes fix-point: computing ..\r");
 		int iter_W = 1;
-		postIrev = new PostI(A.getInitialState(), B.getInitialState(), true);
+		postIrev = new PostI(A.getInitialState(), B.getInitialState(), true, A.getStateManager(), A.getSymbolManager());
 		while (postIrev.apply()) iter_W++;
 		if (flag_v) System.out.println("  MAX prefixes fix-point: done (" +iter_W+ " iterations, " +postIrev.size()+ " elements)");
 		
@@ -161,7 +163,7 @@ public class Main {
 		
 		if (flag_v) System.out.print("  MIN prefixes fix-point: computing ..\r");
 		int iter_U = 1;
-		postI = new PostI(A.getInitialState(), B.getInitialState(), false);
+		postI = new PostI(A.getInitialState(), B.getInitialState(), false, A.getStateManager(), A.getSymbolManager());
 		while (postI.apply()) iter_U++;
 		if (flag_v) System.out.println("  MIN prefixes fix-point: done (" +iter_U+ " iterations, " +postI.size()+ " elements)");
 		
@@ -169,8 +171,8 @@ public class Main {
 		int final_counter=0;
 		int membership_counter=0;
 		int call_V = 0;
-		for (State s : A.getFinalStates()) {final_counter++;
-			if (flag_v) System.out.println("  FINAL STATE '"+s.getName()+"' ("+final_counter+"/"+A.getFinalStates().size()+")");
+		for (Integer s : A.getFinalStates()) {final_counter++;
+			if (flag_v) System.out.println("  FINAL STATE 'STATE_"+s+"' ("+final_counter+"/"+A.getFinalStates().size()+")");
 			
 			int max_counter=0;
 			for (Pair<SetOfStates, Word> pairW : postIrev.getSetOfT(s)) {call_V++;max_counter++;
@@ -181,7 +183,7 @@ public class Main {
 				if (flag_v) System.out.print("    PERIOD fix-point (" +call_V+ "): computing ..\r");
 				
 				int iter_V_local = 1;
-				PostF postF = new PostF(s, W);
+				PostF postF = new PostF(s, W, A.getStateManager(), A.getSymbolManager());
 				while (postF.apply()) iter_V_local++;
 				
 				if (flag_v) System.out.println("    PERIOD fix-point (" +call_V+ "): done (" +iter_V_local+ " iterations, " +postF.size()+ " elements)");

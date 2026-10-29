@@ -14,10 +14,10 @@ public record Symbol(int id) {
 	}
 	
 	public String toString() {
-		return SymbolManager.toString(id);
+		return "(SYM_" + id + ")";
 	}
 	
 	public String getName() {
-		return SymbolManager.getName(id);
+		return "SYM_" + id;
 	}
 }

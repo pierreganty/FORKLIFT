@@ -1,11 +1,10 @@
 package engine;
 
-import automata.*;
 import tuples.*;
 import java.util.*;
 
 public class SetOfContexts
-implements QuasiOrder<SetOfContexts>, Iterable<Pair<Pair<State, State>, Boolean>>{
+implements QuasiOrder<SetOfContexts>, Iterable<Pair<Pair<Integer, Integer>, Boolean>>{
 	
 	private final StateRelation first;
 	private final StateRelation second;
@@ -27,12 +26,12 @@ implements QuasiOrder<SetOfContexts>, Iterable<Pair<Pair<State, State>, Boolean>
 		return this.first.size() + this.second.size();
 	}
 	
-	public void add (State initB, State stateB, Boolean accept) {
+	public void add (Integer initB, Integer stateB, Boolean accept) {
 		this.first.add(initB, stateB);
 		if (accept) this.second.add(initB, stateB);
 	}	
 	
-	public boolean contains (State initB, State stateB, Boolean accept) {
+	public boolean contains (Integer initB, Integer stateB, Boolean accept) {
 		if (accept) return this.second.contains(initB, stateB);
 		return this.first.contains(initB, stateB);
 	}
@@ -47,9 +46,9 @@ implements QuasiOrder<SetOfContexts>, Iterable<Pair<Pair<State, State>, Boolean>
 		joiner.add(this.second.toString());
 		return joiner.toString();
 	}
-
 	
-	public Iterator<Pair<Pair<State, State>, Boolean>> iterator() {
+	
+	public Iterator<Pair<Pair<Integer, Integer>, Boolean>> iterator() {
 		return new ContextIterator(this);
 	}
 }
